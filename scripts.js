@@ -42,14 +42,14 @@ openBtn.addEventListener('click', async () => {
 function animateWriting(html) {
   return new Promise((resolve) => {
     messageEl.innerHTML = '';
+    messageEl.scrollTop = 0;
 
     const cursor = document.createElement('span');
     cursor.textContent = '|';
-    cursor.style.opacity = '0.8';
+    cursor.className = 'typing-cursor';
     messageEl.appendChild(cursor);
 
     let i = 0;
-    let visibleChars = 0;
 
     const step = () => {
       if (i >= html.length) {
@@ -74,29 +74,43 @@ function animateWriting(html) {
         return;
       }
 
-      cursor.insertAdjacentText('beforebegin', html[i]);
+      const currentChar = html[i];
+      cursor.insertAdjacentText('beforebegin', currentChar);
       i += 1;
-      visibleChars += 1;
 
-      movePen(visibleChars);
+      requestAnimationFrame(() => {
+        messageEl.scrollTop = messageEl.scrollHeight;
+        movePen(cursor);
+      });
 
-      const pace = html[i - 1] === '\n' ? 280 : 22 + Math.random() * 42;
-      setTimeout(step, pace);
+      setTimeout(step, getHumanDelay(currentChar));
     };
 
     step();
   });
 }
 
-function movePen(chars) {
-  const charsPerLine = 36;
-  const line = Math.floor(chars / charsPerLine);
-  const col = chars % charsPerLine;
+function getHumanDelay(char) {
+  const base = 24 + Math.random() * 70;
 
-  const x = 26 + col * 10;
-  const y = 28 + line * 30;
+  if (char === '\n') return 240 + Math.random() * 170;
+  if ([',', ';', ':'].includes(char)) return 130 + Math.random() * 170;
+  if (['.', '!', '?'].includes(char)) return 260 + Math.random() * 260;
 
-  writerEl.style.transform = `translate(${x}px, ${y}px)`;
+  // Pequenas pausas de pensamento para parecer mais natural
+  if (Math.random() < 0.05) return 180 + Math.random() * 260;
+
+  return base;
+}
+
+function movePen(cursor) {
+  const cursorRect = cursor.getBoundingClientRect();
+  const letterRect = envelope.querySelector('.letter').getBoundingClientRect();
+
+  const x = cursorRect.left - letterRect.left - 38;
+  const y = cursorRect.top - letterRect.top - 8;
+
+  writerEl.style.transform = `translate(${Math.max(8, x)}px, ${Math.max(20, y)}px)`;
 }
 
 function burstSparkles() {
