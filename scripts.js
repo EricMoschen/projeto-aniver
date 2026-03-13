@@ -1,7 +1,6 @@
 const envelope = document.getElementById('envelope');
 const openBtn = document.getElementById('openBtn');
 const messageEl = document.getElementById('message');
-const writerEl = document.getElementById('writer');
 const hint = document.getElementById('hint');
 const bgHearts = document.getElementById('bgHearts');
 
@@ -29,13 +28,10 @@ openBtn.addEventListener('click', async () => {
   envelope.classList.add('open');
   hint.textContent = 'Escrevendo sua carta... ✍️';
 
-  burstSparkles();
+   burstSparkles();
   await delay(850);
 
-  envelope.classList.add('writing');
   await animateWriting(finalMessage);
-
-  envelope.classList.remove('writing');
   hint.textContent = 'Feliz aniversário! Que seu dia seja perfeito 💖';
 });
 
@@ -54,11 +50,9 @@ function animateWriting(html) {
     const step = () => {
       if (i >= html.length) {
         cursor.remove();
-        writerEl.style.opacity = '0';
         resolve();
         return;
       }
-
       if (html[i] === '<') {
         let tag = '';
         while (i < html.length && html[i] !== '>') {
@@ -80,7 +74,6 @@ function animateWriting(html) {
 
       requestAnimationFrame(() => {
         messageEl.scrollTop = messageEl.scrollHeight;
-        movePen(cursor);
       });
 
       setTimeout(step, getHumanDelay(currentChar));
@@ -101,16 +94,6 @@ function getHumanDelay(char) {
   if (Math.random() < 0.05) return 180 + Math.random() * 260;
 
   return base;
-}
-
-function movePen(cursor) {
-  const cursorRect = cursor.getBoundingClientRect();
-  const letterRect = envelope.querySelector('.letter').getBoundingClientRect();
-
-  const x = cursorRect.left - letterRect.left - 38;
-  const y = cursorRect.top - letterRect.top - 8;
-
-  writerEl.style.transform = `translate(${Math.max(8, x)}px, ${Math.max(20, y)}px)`;
 }
 
 function burstSparkles() {
