@@ -1,166 +1,139 @@
-const envelope = document.getElementById("envelope");
-const texto = document.getElementById("texto");
-const botao = document.getElementById("botaoAbrir");
-const carta = document.getElementById("carta");
+const envelope = document.getElementById('envelope');
+const openBtn = document.getElementById('openBtn');
+const messageEl = document.getElementById('message');
+const writerEl = document.getElementById('writer');
+const hint = document.getElementById('hint');
+const bgHearts = document.getElementById('bgHearts');
 
-const mensagem = `
-<strong>Suzana</strong> 💖<br><br>
+const finalMessage = [
+  'Meu amor,',
+  '',
+  'Hoje o mundo ficou mais bonito porque é o seu aniversário.',
+  'Que cada sorriso seu volte em dobro, em carinho, luz e paz.',
+  '',
+  'Você é o detalhe mais lindo dos meus dias,',
+  'a minha parte favorita de todos os planos,',
+  'e a certeza de que amar vale a pena.',
+  '',
+  'Feliz aniversário, <strong>vida</strong>. ❤️',
+  'Com todo o meu amor,',
+  '<strong>Seu eterno apaixonado</strong>'
+].join('\n');
 
-Feliz aniversário, Susy 💛<br><br>
+let opened = false;
 
-<div id="ursinhos">
-<img src="ursinhos.gif">
-</div>
+openBtn.addEventListener('click', async () => {
+  if (opened) return;
+  opened = true;
 
-Com todo meu carinho,<br>
-<strong>Eric</strong>
-`;
+  envelope.classList.add('open');
+  hint.textContent = 'Escrevendo sua carta... ✍️';
 
-botao.addEventListener("click", () => {
+  burstSparkles();
+  await delay(850);
 
-envelope.classList.add("aberto");
+  envelope.classList.add('writing');
+  await animateWriting(finalMessage);
 
-setTimeout(()=>{
-
-texto.classList.add("mostrar");
-
-digitacao(texto,mensagem);
-
-explodirConfetes();
-
-let contador=0;
-
-const intervalo=setInterval(()=>{
-
-criarCoracao();
-
-contador++;
-
-if(contador>15) clearInterval(intervalo);
-
-},800);
-
-},900);
-
+  envelope.classList.remove('writing');
+  hint.textContent = 'Feliz aniversário! Que seu dia seja perfeito 💖';
 });
 
+function animateWriting(html) {
+  return new Promise((resolve) => {
+    messageEl.innerHTML = '';
 
-function digitacao(elemento,html){
+    const cursor = document.createElement('span');
+    cursor.textContent = '|';
+    cursor.style.opacity = '0.8';
+    messageEl.appendChild(cursor);
 
-let i=0;
+    let i = 0;
+    let visibleChars = 0;
 
-elemento.innerHTML="";
+    const step = () => {
+      if (i >= html.length) {
+        cursor.remove();
+        writerEl.style.opacity = '0';
+        resolve();
+        return;
+      }
 
-const cursor=document.createElement("span");
+      if (html[i] === '<') {
+        let tag = '';
+        while (i < html.length && html[i] !== '>') {
+          tag += html[i];
+          i += 1;
+        }
+        if (i < html.length) {
+          tag += '>';
+          i += 1;
+        }
+        cursor.insertAdjacentHTML('beforebegin', tag);
+        queueMicrotask(step);
+        return;
+      }
 
-cursor.className="cursor";
+      cursor.insertAdjacentText('beforebegin', html[i]);
+      i += 1;
+      visibleChars += 1;
 
-cursor.textContent="|";
+      movePen(visibleChars);
 
-elemento.appendChild(cursor);
+      const pace = html[i - 1] === '\n' ? 280 : 22 + Math.random() * 42;
+      setTimeout(step, pace);
+    };
 
-function digitar(){
-
-if(i<html.length){
-
-if(html[i]==="<"){
-
-let tag="";
-
-while(html[i]!==">"){
-
-tag+=html[i];
-i++;
-
+    step();
+  });
 }
 
-tag+=">";
-i++;
+function movePen(chars) {
+  const charsPerLine = 36;
+  const line = Math.floor(chars / charsPerLine);
+  const col = chars % charsPerLine;
 
-cursor.insertAdjacentHTML("beforebegin",tag);
+  const x = 26 + col * 10;
+  const y = 28 + line * 30;
 
-digitar();
-
-return;
-
+  writerEl.style.transform = `translate(${x}px, ${y}px)`;
 }
 
-cursor.insertAdjacentText("beforebegin",html[i]);
+function burstSparkles() {
+  for (let i = 0; i < 34; i += 1) {
+    const spark = document.createElement('span');
+    spark.className = 'spark';
+    spark.textContent = ['✨', '💖', '💕'][Math.floor(Math.random() * 3)];
+    spark.style.left = '50%';
+    spark.style.top = '54%';
 
-i++;
+    const angle = Math.random() * Math.PI * 2;
+    const dist = 120 + Math.random() * 220;
+    spark.style.setProperty('--x', `${Math.cos(angle) * dist}px`);
+    spark.style.setProperty('--y', `${Math.sin(angle) * dist}px`);
 
-carta.scrollTop=carta.scrollHeight;
-
-let tempo=Math.random()*70+20;
-
-setTimeout(digitar,tempo);
-
+    envelope.appendChild(spark);
+    setTimeout(() => spark.remove(), 1800);
+  }
 }
 
-else{
+function spawnBackgroundHeart() {
+  const heart = document.createElement('span');
+  heart.className = 'bg-heart';
+  heart.textContent = ['❤', '💗', '💞', '✨'][Math.floor(Math.random() * 4)];
+  heart.style.left = `${Math.random() * 100}%`;
+  heart.style.animationDuration = `${6 + Math.random() * 6}s`;
+  heart.style.animationDelay = `${Math.random() * 0.6}s`;
 
-cursor.remove();
-
-const u=document.getElementById("ursinhos");
-
-if(u) u.classList.add("mostrar");
-
+  bgHearts.appendChild(heart);
+  setTimeout(() => heart.remove(), 12000);
 }
 
+setInterval(spawnBackgroundHeart, 480);
+for (let i = 0; i < 10; i += 1) {
+  setTimeout(spawnBackgroundHeart, i * 220);
 }
 
-digitar();
-
-}
-
-
-function explodirConfetes(){
-
-for(let i=0;i<40;i++){
-
-const p=document.createElement("div");
-
-p.innerHTML=["❤️","✨","💖"][Math.floor(Math.random()*3)];
-
-p.className="confete";
-
-p.style.left="50%";
-p.style.top="50%";
-
-const angulo=Math.random()*Math.PI*2;
-
-const vel=Math.random()*200+100;
-
-p.style.setProperty("--dx",`${Math.cos(angulo)*vel}px`);
-p.style.setProperty("--dy",`${Math.sin(angulo)*vel}px`);
-
-carta.appendChild(p);
-
-setTimeout(()=>p.remove(),2000);
-
-}
-
-}
-
-
-function criarCoracao(){
-
-const h=document.createElement("div");
-
-h.innerHTML="💖";
-
-h.style.position="absolute";
-
-h.style.left=(Math.random()*80+10)+"%";
-
-h.style.bottom="20px";
-
-h.style.fontSize="22px";
-
-h.style.animation="flutuar 2s forwards";
-
-carta.appendChild(h);
-
-setTimeout(()=>h.remove(),2000);
-
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }

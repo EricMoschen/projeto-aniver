@@ -1,40 +1,43 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Para Minha Estrela ❤️</title>
-
-<link rel="stylesheet" href="styles.css">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Montserrat:wght@300;400&family=Marck+Script&display=swap" rel="stylesheet">
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cartinha de Aniversário ❤️</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
-
 <body>
+  <div class="bg-hearts" id="bgHearts" aria-hidden="true"></div>
 
-<h1>Talvez seja simples… mas foi feito com muito carinho ❤️</h1>
+  <main class="scene">
+    <header class="title-wrap">
+      <p class="subtitle">Para celebrar o seu dia ✨</p>
+      <h1>Uma cartinha feita com amor</h1>
+    </header>
 
-<div class="container">
+    <section class="envelope-wrapper" aria-label="Envelope com carta animada">
+      <div class="envelope" id="envelope">
+        <div class="flap" aria-hidden="true"></div>
+        <button class="seal" id="openBtn" aria-label="Abrir cartinha"></button>
 
-<div class="envelope" id="envelope">
+        <div class="letter" id="letter">
+          <div class="paper-lines" aria-hidden="true"></div>
 
-<div class="carta" id="carta">
-<div class="texto" id="texto"></div>
-</div>
+          <article class="message" id="message"></article>
 
-<div class="botao-coracao" id="botaoAbrir"></div>
+          <div class="writer" id="writer" aria-hidden="true">
+            <div class="pen"></div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-</div>
-</div>
+    <p class="hint" id="hint">Clique no selo para abrir 💌</p>
+  </main>
 
-<script src="scripts.js"></script>
-
+  <script src="scripts.js"></script>
 </body>
 </html>
