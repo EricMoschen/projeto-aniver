@@ -5,19 +5,23 @@ const hint = document.getElementById('hint');
 const bgHearts = document.getElementById('bgHearts');
 
 const finalMessage = [
-  'Meu amor,',
+  '<strong>Suzana</strong> 💖',
   '',
-  'Hoje o mundo ficou mais bonito porque é o seu aniversário.',
-  'Que cada sorriso seu volte em dobro, em carinho, luz e paz.',
+  'Espero que o seu dia seja cheio de sorrisos que contagiem todos ao seu redor, abraços que aqueçam o coração e momentos que te façam perceber o quanto você é especial.',
   '',
-  'Você é o detalhe mais lindo dos meus dias,',
-  'a minha parte favorita de todos os planos,',
-  'e a certeza de que amar vale a pena.',
+  'Sou muito grato a Deus por ter colocado você na minha vida. Sua presença sempre traz alegria, leveza e muitos momentos bons que guardo com muito carinho. E, sendo bem sincero, espero que ainda possamos criar muitos e muitos outros momentos juntos.',
   '',
-  'Feliz aniversário, <strong>vida</strong>. ❤️',
-  'Com todo o meu amor,',
-  '<strong>Seu eterno apaixonado</strong>'
+  'Qualquer pessoa que consiga te observar de verdade, sem se prender apenas à beleza física, consegue enxergar a mulher incrível que você é. Uma mulher forte, decidida, meiga e com um coração enorme. E sinceramente… não é qualquer um que tem a sorte de perceber isso.',
+  '',
+  'Eu sei que você merece muito mais do que apenas uma mensagem, mas quero que saiba que cada palavra foi escrita pensando em você e em tudo que te torna única.',
+  '',
+  'Que esse novo ciclo da sua vida venha cheio de conquistas, felicidade, paz e momentos que façam seu coração sorrir de verdade.',
+  '',
+  'E que a vida continue te surpreendendo com pessoas, caminhos e histórias maravilhosas… porque, às vezes, as melhores coisas da vida começam exatamente assim: de forma simples, quase sem perceber.',
+  '',
+  'Feliz aniversário, Susy. 💛'
 ].join('\n');
+
 
 let opened = false;
 
@@ -26,9 +30,9 @@ openBtn.addEventListener('click', async () => {
   opened = true;
 
   envelope.classList.add('open');
-  hint.textContent = 'Escrevendo sua carta... ✍️';
+  hint.textContent = '✨💖💖💖✨';
 
-   burstSparkles();
+  burstSparkles();
   await delay(850);
 
   await animateWriting(finalMessage);

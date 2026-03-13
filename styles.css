@@ -105,7 +105,13 @@ h1 {
 /* corpo do envelope */
 .envelope::before {
   background: linear-gradient(150deg, #ff6a98, #ea3f78 58%, #d93267);
-  clip-path: polygon(0 100%, 0 35%, 50% 68%, 100% 35%, 100% 100%);
+  clip-path: polygon(
+0 100%, 
+0 0%, 
+50% 60%, 
+100% 0%, 
+100% 100%
+);
   z-index: 3;
 }
 
